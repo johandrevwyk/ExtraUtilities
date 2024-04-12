@@ -23,6 +23,8 @@ public partial class SpinDetection : BasePlugin
 
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
+        RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
+        RegisterListener<Listeners.OnMapStart>(OnMapStart);
 
     }
 
@@ -107,7 +109,51 @@ public partial class SpinDetection : BasePlugin
             }
             
         }
-        return HookResult.Continue;
+        return HookResult.Handled;
+    }
+
+    private void ResetPlayerStats(int slot)
+    {
+        HeadshotSmokePenetratedNoScope[slot] = 0;
+        HeadshotPenetrated[slot] = 0;
+        HeadshotSmoke[slot] = 0;
+        HeadshotSmokePenetratedNoScope[slot] = 0;
+    }
+    private void OnMapStart(string mapName)
+    {
+        // Retrieve the collection of players using Utilities.GetPlayers()
+        var players = Utilities.GetPlayers();
+
+        // Reset player stats
+        foreach (var player in players)
+        {
+            ResetPlayerStats(player.Slot);
+        }
+    }
+
+    public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo info)
+    {
+        if (@event.Userid.IsValid)
+        {
+            var player = @event.Userid;
+
+            if (!player.IsValid || player.IsBot || player.IsHLTV)
+            {
+                return HookResult.Continue;
+            }
+            else
+            {
+                HeadshotSmokePenetratedNoScope.Remove(player.Slot);
+                HeadshotPenetrated.Remove(player.Slot);
+                HeadshotSmoke.Remove(player.Slot);
+                HeadshotSmokePenetratedNoScope.Remove(player.Slot);
+                return HookResult.Continue;
+            }
+        }
+        else
+        {
+            return HookResult.Continue;
+        }
     }
 
     private readonly HttpClient _httpClient = new HttpClient();
