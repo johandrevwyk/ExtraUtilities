@@ -35,81 +35,57 @@ public partial class SpinDetection : BasePlugin
 
     public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo @info)
     {
+        if (!IsValidPlayerDeath(@event))
+            return HookResult.Handled;
 
-        if (@event.Userid.IsValid && !@event.Userid.IsHLTV)
+        int attackerId = @event.Attacker?.UserId ?? -1;
+        CCSPlayerController attackerController = Utilities.GetPlayerFromUserid(attackerId);
+
+        if (attackerController != null)
         {
-            int? attacker = @event.Attacker.UserId;
-
-            bool headshot = @event.Headshot;
-            bool noscope = @event.Noscope;
-            int penetrated = @event.Penetrated;
-            bool thrusmoke = @event.Thrusmoke;
-
-            int attackerId = attacker!.Value;
-            CCSPlayerController attackerController = Utilities.GetPlayerFromUserid(attackerId);
-
-            if (attacker.HasValue)
-            {
-                if (headshot && (penetrated > 0) && noscope)
-                {
-                    if (attacker.HasValue)
-                    {
-                        HeadshotPenetratedNoScope[attackerController.Slot]++;
-
-                        if (HeadshotPenetratedNoScope[attackerController.Slot] == 2)
-                        {
-                            Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of HeadshotPenetratedNoScope");
-                            _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, "HeadshotPenetratedNoScope");
-                        }
-                    }
-
-                }
-
-                if (headshot && (penetrated > 0))
-                {
-                    if (attacker.HasValue)
-                    {
-                        HeadshotPenetrated[attackerController.Slot]++;
-
-                        if (HeadshotPenetrated[attackerController.Slot] == 5)
-                        {
-                            Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of HeadshotPenetrated");
-                            _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, "HeadshotPenetrated");
-                        }
-                    }
-                }
-
-                if (headshot && thrusmoke && (penetrated > 0) && noscope)
-                {
-                    if (attacker.HasValue)
-                    {
-                        HeadshotSmokePenetratedNoScope[attackerController.Slot]++;
-
-                        if (HeadshotSmokePenetratedNoScope[attackerController.Slot] == 2)
-                        {
-                            Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of HeadshotSmokePenetratedNoScope");
-                            _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, "HeadshotSmokePenetratedNoScope");
-                        }
-                    }
-                }
-
-                if (headshot && thrusmoke)
-                {
-                    if (attacker.HasValue)
-                    {
-                        HeadshotSmoke[attackerController.Slot]++;
-
-                        if (HeadshotSmoke[attackerController.Slot] == 3)
-                        {
-                            Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of HeadshotSmoke");
-                            _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, "HeadshotSmoke");
-                        }
-                    }
-                }
-            }
-            
+            CheckThreshold(attackerController, "HeadshotPenetratedNoScope", @event.Headshot && @event.Penetrated > 0 && @event.Noscope, 2);
+            CheckThreshold(attackerController, "HeadshotPenetrated", @event.Headshot && @event.Penetrated > 0, 5);
+            CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", @event.Headshot && @event.Thrusmoke && @event.Penetrated > 0 && @event.Noscope, 2);
+            CheckThreshold(attackerController, "HeadshotSmoke", @event.Headshot && @event.Thrusmoke, 3);
         }
+
         return HookResult.Handled;
+    }
+
+    private bool IsValidPlayerDeath(EventPlayerDeath @event)
+    {
+        return @event.Userid.IsValid && !@event.Userid.IsHLTV;
+    }
+
+    private void CheckThreshold(CCSPlayerController attackerController, string type, bool condition, int threshold)
+    {
+        if (condition)
+        {
+            int slot = attackerController.Slot;
+            int count = IncreaseCount(type, slot);
+            if (count == threshold)
+            {
+                Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of {type}");
+                _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type);
+            }
+        }
+    }
+
+    private int IncreaseCount(string type, int slot)
+    {
+        switch (type)
+        {
+            case "HeadshotPenetratedNoScope":
+                return ++HeadshotPenetratedNoScope[slot];
+            case "HeadshotPenetrated":
+                return ++HeadshotPenetrated[slot];
+            case "HeadshotSmokePenetratedNoScope":
+                return ++HeadshotSmokePenetratedNoScope[slot];
+            case "HeadshotSmoke":
+                return ++HeadshotSmoke[slot];
+            default:
+                return 0;
+        }
     }
 
     private void ResetPlayerStats(int slot)
