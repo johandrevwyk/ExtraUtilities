@@ -25,9 +25,7 @@ public partial class SpinDetection : BasePlugin
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
-        RegisterEventHandler<EventWeaponFire>(OnWeaponFire, HookMode.Post);
         RegisterListener<Listeners.OnMapStart>(OnMapStart);
-        RegisterListener<Listeners.OnTick>(OnTick);
 
     }
 
@@ -66,26 +64,6 @@ public partial class SpinDetection : BasePlugin
             }
         }
         return HookResult.Continue;
-    }
-
-    public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo @info)
-    {
-        CCSPlayerController player = @event.Userid;
-
-        var weaponservices = player.PlayerPawn.Value!.WeaponServices!;
-        var currentWeapon = weaponservices.ActiveWeapon.Value!.DesignerName;
-
-        if (currentWeapon == "weapon_ssg08" || currentWeapon == "weapon_awp")
-        {
-            Logger.LogInformation(weaponservices.ActiveWeapon.Value.Clip1.ToString());
-        }
-
-        return HookResult.Continue;
-    }
-
-    public void OnTick()
-    {
-
     }
 
     private void CheckThreshold(CCSPlayerController attackerController, string type, bool condition, int threshold)
