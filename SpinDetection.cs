@@ -7,6 +7,7 @@ using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 using System.Text;
+using CounterStrikeSharp.API.Modules.Entities.Constants;
 
 namespace SpinDetection;
 
@@ -24,7 +25,9 @@ public partial class SpinDetection : BasePlugin
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
+        RegisterEventHandler<EventWeaponFire>(OnWeaponFire, HookMode.Post);
         RegisterListener<Listeners.OnMapStart>(OnMapStart);
+        RegisterListener<Listeners.OnTick>(OnTick);
 
     }
 
@@ -32,29 +35,57 @@ public partial class SpinDetection : BasePlugin
     public Dictionary<int, int> HeadshotPenetrated { get; set; } = new Dictionary<int, int>();
     public Dictionary<int, int> HeadshotSmoke { get; set; } = new Dictionary<int, int>();
     public Dictionary<int, int> HeadshotSmokePenetratedNoScope { get; set; } = new Dictionary<int, int>();
+    public Dictionary<int, int> HeadshotSmokePenetrated { get; set; } = new Dictionary<int, int>();
+    public Dictionary<int, int> Bullets { get; set; } = new Dictionary<int, int>();
 
     public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo @info)
     {
-        if (!IsValidPlayerDeath(@event))
-            return HookResult.Handled;
-
-        int attackerId = @event.Attacker?.UserId ?? -1;
-        CCSPlayerController attackerController = Utilities.GetPlayerFromUserid(attackerId);
-
-        if (attackerController != null)
+        if (@event.Userid.IsValid)
         {
-            CheckThreshold(attackerController, "HeadshotPenetratedNoScope", @event.Headshot && @event.Penetrated > 0 && @event.Noscope, 2);
-            CheckThreshold(attackerController, "HeadshotPenetrated", @event.Headshot && @event.Penetrated > 0, 5);
-            CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", @event.Headshot && @event.Thrusmoke && @event.Penetrated > 0 && @event.Noscope, 2);
-            CheckThreshold(attackerController, "HeadshotSmoke", @event.Headshot && @event.Thrusmoke, 3);
-        }
+            if (@event == null) return HookResult.Continue;
+            if (@event.Userid == null) return HookResult.Continue;
 
-        return HookResult.Handled;
+            var player = @event.Userid;
+            bool headshot = @event.Headshot;
+            bool noscope = @event.Noscope;
+            bool thrusmoke = @event.Thrusmoke;
+            int? penetrated = @event.Penetrated;
+            CCSPlayerController attackerController = @event.Attacker;
+
+            if (!player.IsBot || player.IsValid || player != null)
+            {               
+                if (attackerController.IsValid)
+                {
+                    CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, 2);
+                    CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, 5); //working
+                    CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, 2);
+                    CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, 3); //working
+                    CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, 3);
+                }
+
+            }
+        }
+        return HookResult.Continue;
     }
 
-    private bool IsValidPlayerDeath(EventPlayerDeath @event)
+    public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo @info)
     {
-        return @event.Userid.IsValid && !@event.Userid.IsHLTV;
+        CCSPlayerController player = @event.Userid;
+
+        var weaponservices = player.PlayerPawn.Value!.WeaponServices!;
+        var currentWeapon = weaponservices.ActiveWeapon.Value!.DesignerName;
+
+        if (currentWeapon == "weapon_ssg08" || currentWeapon == "weapon_awp")
+        {
+            Logger.LogInformation(weaponservices.ActiveWeapon.Value.Clip1.ToString());
+        }
+
+        return HookResult.Continue;
+    }
+
+    public void OnTick()
+    {
+
     }
 
     private void CheckThreshold(CCSPlayerController attackerController, string type, bool condition, int threshold)
@@ -76,16 +107,27 @@ public partial class SpinDetection : BasePlugin
         switch (type)
         {
             case "HeadshotPenetratedNoScope":
-                return ++HeadshotPenetratedNoScope[slot];
+                if (HeadshotPenetratedNoScope.ContainsKey(slot))
+                    return ++HeadshotPenetratedNoScope[slot];
+                break;
             case "HeadshotPenetrated":
-                return ++HeadshotPenetrated[slot];
+                if (HeadshotPenetrated.ContainsKey(slot))
+                    return ++HeadshotPenetrated[slot];
+                break;
             case "HeadshotSmokePenetratedNoScope":
-                return ++HeadshotSmokePenetratedNoScope[slot];
+                if (HeadshotSmokePenetratedNoScope.ContainsKey(slot))
+                    return ++HeadshotSmokePenetratedNoScope[slot];
+                break;
+            case "HeadshotSmokePenetrated":
+                if (HeadshotSmokePenetrated.ContainsKey(slot))
+                    return ++HeadshotSmokePenetrated[slot];
+                break;
             case "HeadshotSmoke":
-                return ++HeadshotSmoke[slot];
-            default:
-                return 0;
+                if (HeadshotSmoke.ContainsKey(slot))
+                    return ++HeadshotSmoke[slot];
+                break;
         }
+        return 0;
     }
 
     private void ResetPlayerStats(int slot)
@@ -94,7 +136,9 @@ public partial class SpinDetection : BasePlugin
         HeadshotPenetrated[slot] = 0;
         HeadshotSmoke[slot] = 0;
         HeadshotSmokePenetratedNoScope[slot] = 0;
+        HeadshotSmokePenetrated[slot] = 0;
     }
+
     private void OnMapStart(string mapName)
     {
         // Retrieve the collection of players using Utilities.GetPlayers()
@@ -123,6 +167,7 @@ public partial class SpinDetection : BasePlugin
                 HeadshotPenetrated.Remove(player.Slot);
                 HeadshotSmoke.Remove(player.Slot);
                 HeadshotSmokePenetratedNoScope.Remove(player.Slot);
+                HeadshotSmokePenetrated.Remove(player.Slot);
                 return HookResult.Continue;
             }
         }
@@ -137,7 +182,9 @@ public partial class SpinDetection : BasePlugin
     public async Task Discord(string steamid, string playername, string type)
     {
         // Construct your message
-        string message = $"Steam ID: {steamid}, Player: {playername} has reached the limit of - {type}";
+        string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
+
+        string message = $"@everyone Player: [{playername}]({steamProfileUrl}) has reached the limit of - {type} (most likely a spinbotter/cheater)";
 
         // Discord webhook URL
         string webhookUrl = "https://discord.com/api/webhooks/1228471920136294461/JA0BoM2EmOIJj4JJkvE45s-ZM9RzPKww8vda-PtTmv0jwCd6BX63KW5aJ79iRm4U_LBi";
@@ -174,10 +221,11 @@ public partial class SpinDetection : BasePlugin
 
         if (player.IsValid && !player.IsHLTV)
         {
-            HeadshotSmokePenetratedNoScope[player.Slot] = 0;
+            HeadshotPenetratedNoScope[player.Slot] = 0;
             HeadshotPenetrated[player.Slot] = 0;
             HeadshotSmoke[player.Slot] = 0;
             HeadshotSmokePenetratedNoScope[player.Slot] = 0;
+            HeadshotSmokePenetrated[player.Slot] = 0;
         }
 
         return HookResult.Continue;
