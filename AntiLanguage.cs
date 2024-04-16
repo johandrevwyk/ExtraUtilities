@@ -16,8 +16,8 @@ namespace ExtraUtilities
         {
             if (player == null || !player.IsValid || player.IsBot || string.IsNullOrEmpty(message.GetArg(1))) return HookResult.Handled;
 
-            string arg = message.GetArg(1);
-            if (Configuration!.BannedWords.Any(arg.Contains))
+            string arg = message.GetArg(1).ToLower();
+            if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
                 _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
                 return HookResult.Handled;
@@ -30,8 +30,8 @@ namespace ExtraUtilities
         {
             if (player == null || !player.IsValid || player.IsBot || string.IsNullOrEmpty(message.GetArg(1))) return HookResult.Handled;
 
-            string arg = message.GetArg(1);
-            if (Configuration!.BannedWords.Any(arg.Contains))
+            string arg = message.GetArg(1).ToLower();
+            if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
                 _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
                 return HookResult.Handled;
