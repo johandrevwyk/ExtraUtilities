@@ -1,12 +1,11 @@
 {
   "General": {
-    "Webhook": "kakakakhttps",
-    "AlertMessage": "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type} (most likely a spinbotter/cheater)"
+    "Webhook": ""
   },
 
   "Bunnyhop": {
-    "SpeedLimit": "320.0f",
-    "Threshold": 2,
+    "SpeedLimit": 320,
+    "Threshold": 128, //this is pertick
     "DecreasePlayerSpeed": true
   },
 
@@ -20,8 +19,8 @@
   },
 
   "BannedWords": [
-    "hostname",
-    "test"
+    "word1",
+    "word2"
   ]
 
 }

@@ -24,13 +24,16 @@ public partial class ExtraUtilities : BasePlugin
     public string GameDir = string.Empty;
     public Config? Configuration;
 
+    private Dictionary<int, CCSPlayerController> connectedPlayers = new Dictionary<int, CCSPlayerController>();
+
     public override void Load(bool hotReload)
     {
-       // Logger.LogInformation("Spin detection started");
+        LoadConfig();
 
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
+        RegisterEventHandler<EventRoundPrestart>(OnRoundPrestart);
         RegisterListener<Listeners.OnMapStart>(OnMapStart);
         RegisterListener<Listeners.OnTick>(OnTick);
 

@@ -31,7 +31,7 @@ namespace ExtraUtilities
             // Construct your message
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
 
-            string message = $"{Configuration!.General.AlertMessage}";
+            string message = $"@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type} (most likely a spinbotter/cheater)";
 
             // Discord webhook URL
             string webhookUrl = Configuration!.General.Webhook;
@@ -43,7 +43,7 @@ namespace ExtraUtilities
             };
 
             // Serialize payload to JSON
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+            var jsonPayload = JsonConvert.SerializeObject(payload);
 
             // Create HTTP content with JSON payload
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
@@ -65,7 +65,6 @@ namespace ExtraUtilities
 
         private void ResetPlayerStats(int slot)
         {
-            Speed[slot] = 0;
             HeadshotSmokePenetratedNoScope[slot] = 0;
             HeadshotPenetrated[slot] = 0;
             HeadshotSmoke[slot] = 0;
@@ -75,12 +74,19 @@ namespace ExtraUtilities
 
         private void OnMapStart(string mapName)
         {
-            var players = Utilities.GetPlayers();
-
-            foreach (var player in players)
+            foreach (CCSPlayerController player in connectedPlayers.Values)
             {
                 ResetPlayerStats(player.Slot);
             }
+        }
+        public HookResult OnRoundPrestart(EventRoundPrestart @event, GameEventInfo info)
+        {
+            foreach (CCSPlayerController player in connectedPlayers.Values)
+            {
+                Speed[player.Slot] = 0;
+            }
+
+            return HookResult.Continue;
         }
 
         public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo info)
@@ -101,6 +107,7 @@ namespace ExtraUtilities
                     HeadshotSmoke.Remove(player.Slot);
                     HeadshotSmokePenetratedNoScope.Remove(player.Slot);
                     HeadshotSmokePenetrated.Remove(player.Slot);
+                    connectedPlayers.Remove(player.Slot);
                     return HookResult.Continue;
                 }
             }
@@ -110,21 +117,34 @@ namespace ExtraUtilities
             }
         }
 
-        public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo @info)
+        public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo info)
         {
-            CCSPlayerController player = @event.Userid;
-
-            if (player.IsValid && !player.IsHLTV)
+            if (@event.Userid.IsValid)
             {
-                Speed[player.Slot] = 0;
-                HeadshotPenetratedNoScope[player.Slot] = 0;
-                HeadshotPenetrated[player.Slot] = 0;
-                HeadshotSmoke[player.Slot] = 0;
-                HeadshotSmokePenetratedNoScope[player.Slot] = 0;
-                HeadshotSmokePenetrated[player.Slot] = 0;
-            }
+                var player = @event.Userid;
 
-            return HookResult.Continue;
+                if (!player.IsValid || player.IsBot || player.IsHLTV)
+                {
+                    return HookResult.Continue;
+                }
+                else
+                {
+                    connectedPlayers[player.Slot] = new CCSPlayerController(player.Handle);
+                    Speed[player.Slot] = 0;
+                    HeadshotPenetratedNoScope[player.Slot] = 0;
+                    HeadshotPenetrated[player.Slot] = 0;
+                    HeadshotSmoke[player.Slot] = 0;
+                    HeadshotSmokePenetratedNoScope[player.Slot] = 0;
+                    HeadshotSmokePenetrated[player.Slot] = 0;
+                    return HookResult.Continue;
+                }
+            }
+            else
+            {
+                //Console.WriteLine($"[CS2Arena] @evemt.Userid is not valid, proceed to kill yourself");
+                return HookResult.Continue;
+            }
         }
+
     }
 }
