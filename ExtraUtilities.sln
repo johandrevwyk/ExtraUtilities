@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpinDetection", "SpinDetection.csproj", "{CCE446AA-BEE8-4844-BFD8-E57EDBB0FEEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtraUtilities", "ExtraUtilities.csproj", "{CCE446AA-BEE8-4844-BFD8-E57EDBB0FEEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
