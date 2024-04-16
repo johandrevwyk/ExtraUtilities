@@ -37,11 +37,11 @@ namespace ExtraUtilities
                 {
                     if (attackerController.IsValid)
                     {
-                        CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, 3);
-                        CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, 10); //working
-                        CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, 3);
-                        CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, 8); //working
-                        CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, 5);
+                        CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotPenetratedNoScope);
+                        CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, Configuration!.SpinDetection.HeadshotPenetrated); //working
+                        CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotSmokePenetratedNoScope);
+                        CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, Configuration!.SpinDetection.HeadshotSmoke); //working
+                        CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, Configuration!.SpinDetection.HeadshotSmokePenetrated);
                     }
 
                 }
@@ -59,8 +59,13 @@ namespace ExtraUtilities
                 {
                     Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of {type}");
                     _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type);
-                    Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 Cheating");
-                    alreadyBannedPlayers.Add(attackerController.SteamID.ToString());
+
+                    if (Configuration!.SpinDetection.BanPlayer)
+                    {
+                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 Cheating");
+                        alreadyBannedPlayers.Add(attackerController.SteamID.ToString());
+                    }
+
                 }
             }
         }

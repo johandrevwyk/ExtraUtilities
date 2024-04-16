@@ -6,7 +6,7 @@
 
   "Bunnyhop": {
     "SpeedLimit": "320.0f",
-    "Threshold": 5,
+    "Threshold": 2,
     "DecreasePlayerSpeed": true
   },
 

@@ -8,11 +8,13 @@ using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using CounterStrikeSharp.API.Modules.Entities.Constants;
+using CounterStrikeSharp.API.Core.Attributes;
 
 namespace ExtraUtilities;
 
 public partial class ExtraUtilities : BasePlugin
 {
+    
     public override string ModuleName => "ExtraUtilities";
     public override string ModuleAuthor => "heartbreakhotel";
     public override string ModuleDescription => "Additional server utilities";
@@ -30,6 +32,7 @@ public partial class ExtraUtilities : BasePlugin
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
         RegisterListener<Listeners.OnMapStart>(OnMapStart);
+        RegisterListener<Listeners.OnTick>(OnTick);
 
         AddCommandListener("say", OnPlayerChatAll);
         AddCommandListener("say_team", OnPlayerChatTeam);

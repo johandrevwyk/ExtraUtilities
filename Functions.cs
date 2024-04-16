@@ -1,6 +1,7 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,10 @@ namespace ExtraUtilities
             // Construct your message
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
 
-            string message = $"@everyone Player: [{playername}]({steamProfileUrl}) has reached the limit of - {type} (most likely a spinbotter/cheater)";
+            string message = $"{Configuration!.General.AlertMessage}";
 
             // Discord webhook URL
-            string webhookUrl = "https://discord.com/api/webhooks/1228471920136294461/JA0BoM2EmOIJj4JJkvE45s-ZM9RzPKww8vda-PtTmv0jwCd6BX63KW5aJ79iRm4U_LBi";
+            string webhookUrl = Configuration!.General.Webhook;
 
             // Create JSON payload
             var payload = new
@@ -53,11 +54,11 @@ namespace ExtraUtilities
             // Check if the request was successful
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Message sent to Discord webhook successfully.");
+                Logger.LogInformation("Message sent to Discord webhook successfully.");
             }
             else
             {
-                Console.WriteLine($"Failed to send message to Discord webhook. Status code: {response.StatusCode}");
+                Logger.LogCritical($"Failed to send message to Discord webhook. Status code: {response.StatusCode}");
             }
         }
 
@@ -74,10 +75,8 @@ namespace ExtraUtilities
 
         private void OnMapStart(string mapName)
         {
-            // Retrieve the collection of players using Utilities.GetPlayers()
             var players = Utilities.GetPlayers();
 
-            // Reset player stats
             foreach (var player in players)
             {
                 ResetPlayerStats(player.Slot);

@@ -16,9 +16,11 @@ namespace ExtraUtilities
         {
             if (player == null || !player.IsValid || player.IsBot || string.IsNullOrEmpty(message.GetArg(1))) return HookResult.Handled;
 
-            if (message.GetArg(1).Contains("!"))
+            string arg = message.GetArg(1);
+            if (Configuration!.BannedWords.Any(arg.Contains))
             {
-                return HookResult.Continue;
+                _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
+                return HookResult.Handled;
             }
 
             return HookResult.Continue;
@@ -28,14 +30,14 @@ namespace ExtraUtilities
         {
             if (player == null || !player.IsValid || player.IsBot || string.IsNullOrEmpty(message.GetArg(1))) return HookResult.Handled;
 
-            if (message.GetArg(1).Contains("!"))
+            string arg = message.GetArg(1);
+            if (Configuration!.BannedWords.Any(arg.Contains))
             {
-                return HookResult.Continue;
+                _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
+                return HookResult.Handled;
             }
 
             return HookResult.Continue;
         }
-    }
-}
     }
 }
