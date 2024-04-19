@@ -1,4 +1,4 @@
-﻿using CounterStrikeSharp.API;
+using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
@@ -14,7 +14,7 @@ namespace ExtraUtilities
     public partial class ExtraUtilities
     {
         public Dictionary<int, int> Speed { get; set; } = new Dictionary<int, int>();
-        
+
         private void OnTick()
         {
             foreach (CCSPlayerController player in connectedPlayers.Values)
@@ -23,29 +23,25 @@ namespace ExtraUtilities
                 {
                     Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
                     float velo = velocity.Length2D();
+                    var steamID = player.SteamID.ToString();
+                    var playerName = player.PlayerName;
 
-                    if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP))
+                    if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP ||
+                        player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP) &&
+                        velo > Configuration!.Bunnyhop.SpeedLimit)
                     {
-                        if (velo != 0)
+                        if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
                         {
-                            if (velo > Configuration!.Bunnyhop.SpeedLimit)
-                            {
-                                if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
-                                {
-                                    float mult = Configuration!.Bunnyhop.SpeedLimit / velo;
-                                    velocity.X *= mult;
-                                    velocity.Y *= mult;
-                                    player.PlayerPawn.Value!.AbsVelocity.X = velocity.X;
-                                    player.PlayerPawn.Value!.AbsVelocity.Y = velocity.Y;
-                                }
-
-                                if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
-                                if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
-                                {
-                                    _ = Discord(player.SteamID.ToString(), player.PlayerName, "Bunnyhop Speed");
-                                }
-                            }
+                            float mult = Configuration!.Bunnyhop.SpeedLimit / velo;
+                            velocity.X *= mult;
+                            velocity.Y *= mult;
+                            player.PlayerPawn.Value!.AbsVelocity.X = velocity.X;
+                            player.PlayerPawn.Value!.AbsVelocity.Y = velocity.Y;
                         }
+
+                        if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
+                        if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
+                            _ = Task.Run(async () => await Discord(steamID, playerName, "Bunnyhop Speed"));
                     }
                 }
             }
