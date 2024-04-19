@@ -23,6 +23,8 @@ namespace ExtraUtilities
                 {
                     Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
                     float velo = velocity.Length2D();
+                    var steamID = player.SteamID.ToString();
+                    var playerName = player.PlayerName;
 
                     if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP ||
                         player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP) &&
@@ -39,7 +41,7 @@ namespace ExtraUtilities
 
                         if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
                         if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
-                            _ = Task.Run(async () => await Discord(player.SteamID.ToString(), player.PlayerName, "Bunnyhop Speed"));
+                            _ = Task.Run(async () => await Discord(steamID, playerName, "Bunnyhop Speed"));
                     }
                 }
             }
