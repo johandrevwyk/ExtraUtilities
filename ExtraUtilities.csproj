@@ -20,8 +20,5 @@
   </ItemGroup>
 <ItemGroup>
     <None Update="lang\**\*.*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-<ItemGroup>
-  <Folder Include="build\" />
-</ItemGroup> 
+  </ItemGroup> 
 </Project>
