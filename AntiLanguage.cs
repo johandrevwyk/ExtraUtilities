@@ -20,9 +20,12 @@ namespace ExtraUtilities
             if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
                 _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
-                Server.ExecuteCommand($"css_silence #{player.UserId} 4320 Racism");
-                player.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for 3 days due to Racism");
-                Server.PrintToChatAll($" {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to Racism");
+                if (Configuration!.BannedWordsSettings.SilencePlayer)
+                {
+                    Server.ExecuteCommand($"css_silence #{player.UserId} {Configuration.BannedWordsSettings.Duration} {Configuration.BannedWordsSettings.Reason}");
+                    player.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}");
+                    Server.PrintToChatAll($" {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Configuration.BannedWordsSettings.Reason}");
+                }
                 return HookResult.Handled;
             }
 
@@ -37,9 +40,14 @@ namespace ExtraUtilities
             if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
                 _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
-                Server.ExecuteCommand($"css_silence #{player.UserId} 4320 Racism");
-                player.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for 3 days due to Racism");
-                Server.PrintToChatAll($" {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to Racism");
+
+                if (Configuration!.BannedWordsSettings.SilencePlayer)
+                {
+                    Server.ExecuteCommand($"css_silence #{player.UserId} {Configuration.BannedWordsSettings.Duration} {Configuration.BannedWordsSettings.Reason}");
+                    player.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}");
+                    Server.PrintToChatAll($" {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Configuration.BannedWordsSettings.Reason}");
+                }
+             
                 return HookResult.Handled;
             }
 

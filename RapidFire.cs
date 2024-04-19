@@ -50,7 +50,7 @@ namespace ExtraUtilities
 
             // warn player
             _ = Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire");
-            if (Configuration!.SpinDetection.BanPlayer)
+            if (Configuration!.RapidFire.BanPlayer)
             {
                 Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 Cheating");
                 @event.Userid.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord");

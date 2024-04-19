@@ -18,6 +18,16 @@
     "BanPlayer": true
   },
 
+  "RapidFire": {
+    "BanPlayer": true
+  },
+
+  "BannedWordsSettings": {
+    "SilencePlayer": true,
+    "Duration": 4080,
+    "Reason": "Racism"
+  },
+
   "BannedWords": [
     "word1",
     "word2"

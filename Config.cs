@@ -8,6 +8,8 @@ public class Config
     public General General { get; set; }
     public SpinDetection SpinDetection { get; set; }
     public Bunnyhop Bunnyhop { get; set; }
+    public RapidFire RapidFire { get; set; }
+    public BannedWordsSettings BannedWordsSettings { get; set; }
     public string[] BannedWords { get; set; }
 }
 
@@ -31,4 +33,16 @@ public class Bunnyhop
     public float SpeedLimit { get; set; }
     public int Threshold { get; set; }
     public bool DecreasePlayerSpeed { get; set; }  
+}
+
+public class RapidFire
+{
+    public bool BanPlayer { get; set; }
+}
+
+public class BannedWordsSettings
+{
+    public bool SilencePlayer { get; set; }
+    public int Duration { get; set; }
+    public string Reason { get; set; }
 }
