@@ -28,10 +28,14 @@ namespace ExtraUtilities
 
         public async Task Discord(string steamid, string playername, string type)
         {
-            // Construct your message
-            string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
+            string messageTemplate = Configuration!.General.MessageTemplate;
 
-            string message = $"@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}";
+            // Construct message with actual values
+            string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
+            string message = messageTemplate
+                .Replace("{playername}", playername)
+                .Replace("{steamProfileUrl}", steamProfileUrl)
+                .Replace("{type}", type);
 
             // Discord webhook URL
             string webhookUrl = Configuration!.General.Webhook;

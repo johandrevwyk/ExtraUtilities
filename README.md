@@ -22,7 +22,8 @@ Modify the config to your liking - ensuring that discord webhook is set
 ```json
 {
   "General": {
-    "Webhook": "" //your discord webhook url
+    "Webhook": "", //your discord webhook url
+    "MessageTemplate": "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}" //do not change the variables
   },
 
   "Bunnyhop": {

@@ -16,6 +16,7 @@ public class Config
 public class General
 {
     public string Webhook { get; set; }
+    public string MessageTemplate { get; set; }
 }
 
 public class SpinDetection

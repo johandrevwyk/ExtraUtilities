@@ -1,6 +1,7 @@
 {
   "General": {
-    "Webhook": ""
+    "Webhook": "",
+    "MessageTemplate": "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}"
   },
 
   "Bunnyhop": {
