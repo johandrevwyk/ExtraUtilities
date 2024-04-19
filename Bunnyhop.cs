@@ -24,7 +24,7 @@ namespace ExtraUtilities
                     Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
                     float velo = velocity.Length2D();
 
-                    if (player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_WALK || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_WALK)
+                    if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP))
                     {
                         if (velo != 0)
                         {
