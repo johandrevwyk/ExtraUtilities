@@ -6,11 +6,11 @@
 
   "Bunnyhop": {
     "SpeedLimit": 320,
-    "Threshold": 128, //this is pertick
+    "Threshold": 128,
     "DecreasePlayerSpeed": true
   },
 
-  "SpinDetection": { //thresholds before sending to discord
+  "SpinDetection": {
     "HeadshotPenetratedNoScope": 3,
     "HeadshotPenetrated": 10,
     "HeadshotSmokePenetratedNoScope": 3,
