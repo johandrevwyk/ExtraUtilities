@@ -24,8 +24,10 @@ namespace ExtraUtilities
                     Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
                     float velo = velocity.Length2D();
 
-                    if (velo != 0)
+                    if (player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_WALK || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_WALK)
                     {
+                        if (velo != 0)
+                        {
                             if (velo > Configuration!.Bunnyhop.SpeedLimit)
                             {
                                 if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
@@ -43,6 +45,7 @@ namespace ExtraUtilities
                                     _ = Discord(player.SteamID.ToString(), player.PlayerName, "Bunnyhop Speed");
                                 }
                             }
+                        }
                     }
                 }
             }
