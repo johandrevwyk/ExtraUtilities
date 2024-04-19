@@ -31,7 +31,7 @@ namespace ExtraUtilities
             // Construct your message
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
 
-            string message = $"@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type} (most likely a spinbotter/cheater)";
+            string message = $"@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}";
 
             // Discord webhook URL
             string webhookUrl = Configuration!.General.Webhook;
@@ -77,6 +77,8 @@ namespace ExtraUtilities
             foreach (CCSPlayerController player in connectedPlayers.Values)
             {
                 ResetPlayerStats(player.Slot);
+
+                _lastPlayerShotTick.Clear();
             }
         }
         public HookResult OnRoundPrestart(EventRoundPrestart @event, GameEventInfo info)
@@ -107,6 +109,12 @@ namespace ExtraUtilities
                     HeadshotSmoke.Remove(player.Slot);
                     HeadshotSmokePenetratedNoScope.Remove(player.Slot);
                     HeadshotSmokePenetrated.Remove(player.Slot);
+
+                    var entityFromSlot = Utilities.GetPlayerFromSlot(player.Slot);
+                    _lastPlayerShotTick.Remove(entityFromSlot.Pawn.Index);
+                    _rapidFireBlockUserIds.Remove(entityFromSlot.Pawn.Index);
+                    _rapidFireBlockWarnings.Remove(entityFromSlot.Pawn.Index);
+
                     connectedPlayers.Remove(player.Slot);
                     return HookResult.Continue;
                 }
@@ -136,6 +144,10 @@ namespace ExtraUtilities
                     HeadshotSmoke[player.Slot] = 0;
                     HeadshotSmokePenetratedNoScope[player.Slot] = 0;
                     HeadshotSmokePenetrated[player.Slot] = 0;
+
+                    _lastPlayerShotTick.Remove(@event.Userid.Pawn.Index);
+                    _rapidFireBlockUserIds.Remove(@event.Userid.Pawn.Index);
+                    _rapidFireBlockWarnings.Remove(@event.Userid.Pawn.Index);
                     return HookResult.Continue;
                 }
             }

@@ -1,5 +1,7 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Modules.Entities;
+using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -63,6 +65,8 @@ namespace ExtraUtilities
                     if (Configuration!.SpinDetection.BanPlayer)
                     {
                         Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 Cheating");
+                        attackerController.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord");
+                        Server.PrintToChatAll($" {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating");
                         alreadyBannedPlayers.Add(attackerController.SteamID.ToString());
                     }
 
