@@ -60,7 +60,7 @@ namespace ExtraUtilities
                 if (count == threshold && !alreadyBannedPlayers.Contains(attackerController.SteamID.ToString()))
                 {
                     Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of {type}");
-                    _ = Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type);
+                    _ = Task.Run(async () => await Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type);
 
                     if (Configuration!.SpinDetection.BanPlayer)
                     {

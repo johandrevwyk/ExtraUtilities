@@ -19,7 +19,7 @@ namespace ExtraUtilities
             string arg = message.GetArg(1).ToLower();
             if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
-                _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
+                _ = Task.Run(async () => await Discord(player.SteamID.ToString(), player.PlayerName, arg);
                 if (Configuration!.BannedWordsSettings.SilencePlayer)
                 {
                     Server.ExecuteCommand($"css_silence #{player.UserId} {Configuration.BannedWordsSettings.Duration} {Configuration.BannedWordsSettings.Reason}");
@@ -39,7 +39,7 @@ namespace ExtraUtilities
             string arg = message.GetArg(1).ToLower();
             if (Configuration!.BannedWords.Any(word => arg.Contains(word.ToLower())))
             {
-                _ = Discord(player.SteamID.ToString(), player.PlayerName, arg);
+                _ = Task.Run(async () => await Discord(player.SteamID.ToString(), player.PlayerName, arg);
 
                 if (Configuration!.BannedWordsSettings.SilencePlayer)
                 {

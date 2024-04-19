@@ -49,7 +49,7 @@ namespace ExtraUtilities
                 return HookResult.Continue;
 
             // warn player
-            _ = Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire");
+            _ = Task.Run(async () => await Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire");
             if (Configuration!.RapidFire.BanPlayer)
             {
                 Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 Cheating");
