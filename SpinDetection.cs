@@ -3,6 +3,7 @@ using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,6 @@ namespace ExtraUtilities
         public Dictionary<int, int> HeadshotSmoke { get; set; } = new Dictionary<int, int>();
         public Dictionary<int, int> HeadshotSmokePenetratedNoScope { get; set; } = new Dictionary<int, int>();
         public Dictionary<int, int> HeadshotSmokePenetrated { get; set; } = new Dictionary<int, int>();
-        public Dictionary<int, int> Bullets { get; set; } = new Dictionary<int, int>();
 
         public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo @info)
         {
@@ -59,14 +59,25 @@ namespace ExtraUtilities
                 int count = IncreaseCount(type, slot);
                 if (count == threshold && !alreadyBannedPlayers.Contains(attackerController.SteamID.ToString()))
                 {
-                    Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of {type}");
+                    //Logger.LogInformation($"Player with steamid {attackerController.SteamID.ToString()} has reached the threshold of {type}");
                     _ = Task.Run(async () => await Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type));
 
                     if (Configuration!.SpinDetection.BanPlayer)
                     {
-                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 Cheating");
-                        attackerController.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord");
-                        Server.PrintToChatAll($" {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating");
+                        string banMessagePlayer = Configuration.SpinDetection.BanMessagePlayer
+                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
+                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
+
+                        string banMessageServer = Configuration.SpinDetection.BanMessageServer
+                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
+                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
+                            .Replace("{attackerController.PlayerName}", attackerController.PlayerName);
+
+                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 {Configuration!.SpinDetection.BanReason}");
+
+                        attackerController.PrintToChat(banMessagePlayer);
+                        Server.PrintToChatAll(banMessageServer);
+
                         alreadyBannedPlayers.Add(attackerController.SteamID.ToString());
                     }
 

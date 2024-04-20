@@ -74,6 +74,7 @@ namespace ExtraUtilities
             HeadshotSmoke[slot] = 0;
             HeadshotSmokePenetratedNoScope[slot] = 0;
             HeadshotSmokePenetrated[slot] = 0;
+            RapidFire[slot] = 0;
         }
 
         private void OnMapStart(string mapName)
@@ -113,6 +114,7 @@ namespace ExtraUtilities
                     HeadshotSmoke.Remove(player.Slot);
                     HeadshotSmokePenetratedNoScope.Remove(player.Slot);
                     HeadshotSmokePenetrated.Remove(player.Slot);
+                    RapidFire.Remove(player.Slot);
 
                     var entityFromSlot = Utilities.GetPlayerFromSlot(player.Slot);
                     _lastPlayerShotTick.Remove(entityFromSlot.Pawn.Index);
@@ -148,6 +150,7 @@ namespace ExtraUtilities
                     HeadshotSmoke[player.Slot] = 0;
                     HeadshotSmokePenetratedNoScope[player.Slot] = 0;
                     HeadshotSmokePenetrated[player.Slot] = 0;
+                    RapidFire[player.Slot] = 0;
 
                     _lastPlayerShotTick.Remove(@event.Userid.Pawn.Index);
                     _rapidFireBlockUserIds.Remove(@event.Userid.Pawn.Index);

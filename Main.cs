@@ -59,6 +59,15 @@ public partial class ExtraUtilities : BasePlugin
             return HookResult.Changed;
         }, HookMode.Pre);
 
+        if (Configuration != null)
+        {
+            if (Configuration.General.Webhook == null)
+            {
+                Logger.LogCritical("You do not have a discord webhook set therefore the plugin will not load");
+                throw new Exception("Discord webhook is not set");
+            }
+        }
+
     }
 
 }

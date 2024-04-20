@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CounterStrikeSharp.API.Modules.Utils;
+using CounterStrikeSharp.API.Modules.Entities;
 
 namespace ExtraUtilities
 {
@@ -16,6 +17,8 @@ namespace ExtraUtilities
         private readonly Dictionary<uint, int> _lastPlayerShotTick = new();
         private readonly HashSet<uint> _rapidFireBlockUserIds = new();
         private readonly Dictionary<uint, float> _rapidFireBlockWarnings = new();
+
+        public Dictionary<int, int> RapidFire { get; set; } = new Dictionary<int, int>();
 
         public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo @info)
         {
@@ -49,13 +52,31 @@ namespace ExtraUtilities
                 return HookResult.Continue;
 
             // warn player
-            _ = Task.Run(async () => await Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire"));
-            if (Configuration!.RapidFire.BanPlayer)
+
+            if (RapidFire.ContainsKey(@event.Userid.Slot)) RapidFire[@event.Userid.Slot]++;
+
+            if (RapidFire[@event.Userid.Slot] == Configuration!.RapidFire.Threshold)
             {
-                Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 Cheating");
-                @event.Userid.PrintToChat($" {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord");
-                Server.PrintToChatAll($" {ChatColors.Red}[Server] - {@event.Userid.PlayerName} {ChatColors.Default}has automatically been banned due to cheating");
+                _ = Task.Run(async () => await Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire"));
+
+                if (Configuration!.RapidFire.BanPlayer)
+                {
+                    string banMessagePlayer = Configuration.RapidFire.BanMessagePlayer
+                                                .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
+                                                .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
+
+                    string banMessageServer = Configuration.RapidFire.BanMessageServer
+                        .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
+                        .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
+                        .Replace("{attackerController.PlayerName}", @event.Userid.PlayerName);
+
+                    Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 {Configuration!.RapidFire.BanReason}");
+
+                    @event.Userid.PrintToChat(banMessagePlayer);
+                    Server.PrintToChatAll(banMessageServer);
+                }
             }
+
             _rapidFireBlockWarnings[index] = Server.CurrentTime;
 
             return HookResult.Continue;

@@ -16,16 +16,25 @@
     "HeadshotSmokePenetratedNoScope": 3,
     "HeadshotSmoke": 8,
     "HeadshotSmokePenetrated": 5,
-    "BanPlayer": true
+    "BanPlayer": true,
+    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord",
+    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
+    "BanReason": "Cheating"
   },
 
   "RapidFire": {
-    "BanPlayer": true
+    "BanPlayer": true,
+    "Threshold": 3,
+    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord",
+    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
+    "BanReason": "Cheating"
   },
 
   "BannedWordsSettings": {
     "SilencePlayer": true,
     "Duration": 4080,
+    "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}",
+    "SilenceMessageServer": " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Configuration.BannedWordsSettings.Reason}",
     "Reason": "Racism"
   },
 

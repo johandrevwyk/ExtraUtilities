@@ -22,32 +22,41 @@ Modify the config to your liking - ensuring that discord webhook is set
 ```json
 {
   "General": {
-    "Webhook": "", //your discord webhook url
+    "Webhook": "", //your webhook url
     "MessageTemplate": "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}" //do not change the variables
   },
 
   "Bunnyhop": {
-    "SpeedLimit": 320, //this is the default walking speed
-    "Threshold": 128, //this is pertick
-    "DecreasePlayerSpeed": true //this will decrease the playerspeed if the speedlimit is met
+    "SpeedLimit": 320,
+    "Threshold": 128,
+    "DecreasePlayerSpeed": true
   },
 
-  "SpinDetection": { //thresholds before sending to discord and/or banning
+  "SpinDetection": { //thresholds for detection
     "HeadshotPenetratedNoScope": 3,
     "HeadshotPenetrated": 10,
     "HeadshotSmokePenetratedNoScope": 3,
     "HeadshotSmoke": 8,
     "HeadshotSmokePenetrated": 5,
-    "BanPlayer": true
+    "BanPlayer": true,
+    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord", //do not change the colors or variables, only the text
+    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
+    "BanReason": "Cheating"
   },
 
   "RapidFire": {
-    "BanPlayer": true
+    "BanPlayer": true,
+    "Threshold": 3,
+    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord", //do not change the colors or variables, only the text
+    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
+    "BanReason": "Cheating"
   },
 
   "BannedWordsSettings": {
     "SilencePlayer": true,
     "Duration": 4080,
+    "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}",
+    "SilenceMessageServer": " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Configuration.BannedWordsSettings.Reason}",
     "Reason": "Racism"
   },
 
@@ -58,6 +67,8 @@ Modify the config to your liking - ensuring that discord webhook is set
 
 }
 ```
+
+PS: I'm too lazy to deal with colors, so you will have to stick with red or keep it white
 
 Rapid Fire code borrowed from [RapidFireFix by imi-tat0r](https://github.com/HvH-gg/RapidFireFix/)
 

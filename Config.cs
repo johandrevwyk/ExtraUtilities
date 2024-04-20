@@ -27,6 +27,9 @@ public class SpinDetection
     public int HeadshotSmoke { get; set; }
     public int HeadshotSmokePenetrated { get; set; }
     public bool BanPlayer { get; set; }
+    public string BanMessagePlayer { get; set; }
+    public string BanMessageServer { get; set; }
+    public string BanReason { get; set; }
 }
 
 public class Bunnyhop
@@ -39,11 +42,17 @@ public class Bunnyhop
 public class RapidFire
 {
     public bool BanPlayer { get; set; }
+    public string BanMessagePlayer { get; set; }
+    public string BanMessageServer { get; set; }
+    public string BanReason { get; set; }
+    public int Threshold { get; set; }
 }
 
 public class BannedWordsSettings
 {
     public bool SilencePlayer { get; set; }
     public int Duration { get; set; }
+    public string SilenceMessagePlayer { get; set; }
+    public string SilenceMessageServer { get; set; }
     public string Reason { get; set; }
 }
