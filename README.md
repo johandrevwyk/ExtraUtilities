@@ -27,12 +27,14 @@ Modify the config to your liking - ensuring that discord webhook is set
   },
 
   "Bunnyhop": {
+    "Enabled" : true,
     "SpeedLimit": 320,
     "Threshold": 128,
     "DecreasePlayerSpeed": true
   },
 
   "SpinDetection": { //thresholds for detection
+    "Enabled" : true,
     "HeadshotPenetratedNoScope": 3,
     "HeadshotPenetrated": 10,
     "HeadshotSmokePenetratedNoScope": 3,
@@ -45,6 +47,7 @@ Modify the config to your liking - ensuring that discord webhook is set
   },
 
   "RapidFire": {
+    "Enabled" : true,
     "BanPlayer": true,
     "Threshold": 3,
     "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord", //do not change the colors or variables, only the text
@@ -53,6 +56,7 @@ Modify the config to your liking - ensuring that discord webhook is set
   },
 
   "BannedWordsSettings": {
+    "Enabled" : true,
     "SilencePlayer": true,
     "Duration": 4080,
     "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}",
