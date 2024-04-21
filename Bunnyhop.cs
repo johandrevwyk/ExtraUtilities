@@ -17,34 +17,37 @@ namespace ExtraUtilities
 
         private void OnTick()
         {
-            foreach (CCSPlayerController player in connectedPlayers.Values)
+            if (Configuration!.Bunnyhop.Enabled)
             {
-                if (player is { PawnIsAlive: true, IsValid: true })
+                foreach (CCSPlayerController player in connectedPlayers.Values)
                 {
-                    Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
-                    float velo = velocity.Length2D();
-                    var steamID = player.SteamID.ToString();
-                    var playerName = player.PlayerName;
-
-                    if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP ||
-                        player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP) &&
-                        velo > Configuration!.Bunnyhop.SpeedLimit)
+                    if (player is { PawnIsAlive: true, IsValid: true })
                     {
-                        if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
-                        {
-                            float mult = Configuration!.Bunnyhop.SpeedLimit / velo;
-                            velocity.X *= mult;
-                            velocity.Y *= mult;
-                            player.PlayerPawn.Value!.AbsVelocity.X = velocity.X;
-                            player.PlayerPawn.Value!.AbsVelocity.Y = velocity.Y;
-                        }
+                        Vector velocity = player.PlayerPawn!.Value!.AbsVelocity;
+                        float velo = velocity.Length2D();
+                        var steamID = player.SteamID.ToString();
+                        var playerName = player.PlayerName;
 
-                        if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
-                        if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
-                            _ = Task.Run(async () => await Discord(steamID, playerName, "Bunnyhop Speed"));
+                        if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP ||
+                            player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP) &&
+                            velo > Configuration!.Bunnyhop.SpeedLimit)
+                        {
+                            if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
+                            {
+                                float mult = Configuration!.Bunnyhop.SpeedLimit / velo;
+                                velocity.X *= mult;
+                                velocity.Y *= mult;
+                                player.PlayerPawn.Value!.AbsVelocity.X = velocity.X;
+                                player.PlayerPawn.Value!.AbsVelocity.Y = velocity.Y;
+                            }
+
+                            if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
+                            if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
+                                _ = Task.Run(async () => await Discord(steamID, playerName, "Bunnyhop Speed"));
+                        }
                     }
                 }
-            }
+            }           
         }
     }
 }

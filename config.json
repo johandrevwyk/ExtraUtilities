@@ -5,12 +5,14 @@
   },
 
   "Bunnyhop": {
+    "Enabled": true,
     "SpeedLimit": 320,
     "Threshold": 128,
     "DecreasePlayerSpeed": true
   },
 
   "SpinDetection": {
+    "Enabled": true,
     "HeadshotPenetratedNoScope": 3,
     "HeadshotPenetrated": 10,
     "HeadshotSmokePenetratedNoScope": 3,
@@ -23,6 +25,7 @@
   },
 
   "RapidFire": {
+    "Enabled": true,
     "BanPlayer": true,
     "Threshold": 3,
     "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord",
@@ -31,6 +34,7 @@
   },
 
   "BannedWordsSettings": {
+    "Enabled": true,
     "SilencePlayer": true,
     "Duration": 4080,
     "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}",
