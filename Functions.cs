@@ -1,11 +1,13 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Modules.Cvars;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,14 +30,18 @@ namespace ExtraUtilities
 
         public async Task Discord(string steamid, string playername, string type)
         {
-            string messageTemplate = Configuration!.General.MessageTemplate;
+            string header = ConVar.Find("hostname")!.StringValue;
+            string footer = $"{ConVar.Find("ip")!.StringValue}:{ConVar.Find("port")!.StringValue}";
 
-            // Construct message with actual values
+            // Construct message with actual values, including servername
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
-            string message = messageTemplate
+            string data = Configuration!.General.MessageTemplate
                 .Replace("{playername}", playername)
                 .Replace("{steamProfileUrl}", steamProfileUrl)
                 .Replace("{type}", type);
+
+            // Construct the full message with header, data, and footer
+            string message = $"**{header}**\n{data}\n*{footer}*";
 
             // Discord webhook URL
             string webhookUrl = Configuration!.General.Webhook;
