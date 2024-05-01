@@ -19,7 +19,7 @@ public partial class ExtraUtilities : BasePlugin
     public override string ModuleName => "ExtraUtilities";
     public override string ModuleAuthor => "heartbreakhotel";
     public override string ModuleDescription => "Additional server utilities";
-    public override string ModuleVersion => "0.0.7";
+    public override string ModuleVersion => "0.0.8";
 
     public const string ConfigFileName = "config.json";
     public string GameDir = string.Empty;
