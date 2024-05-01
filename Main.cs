@@ -1,15 +1,6 @@
-﻿using System.Numerics;
-using System.Text.Json.Serialization;
-using CounterStrikeSharp.API;
-using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Core.Attributes.Registration;
-using CounterStrikeSharp.API.Modules.Entities;
-using CounterStrikeSharp.API.Modules.Utils;
-using Microsoft.Extensions.Logging;
-using System.Text;
-using CounterStrikeSharp.API.Modules.Entities.Constants;
-using CounterStrikeSharp.API.Core.Attributes;
+﻿using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace ExtraUtilities;
 

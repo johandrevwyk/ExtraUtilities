@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Reflection;
-
-namespace ExtraUtilities;
+﻿namespace ExtraUtilities;
 
 public class Config
 {

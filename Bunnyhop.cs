@@ -1,13 +1,5 @@
-using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtraUtilities
 {
@@ -28,8 +20,9 @@ namespace ExtraUtilities
                         var steamID = player.SteamID.ToString();
                         var playerName = player.PlayerName;
 
-                        if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP ||
-                            player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP) &&
+                        if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP 
+                            || player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_OBSERVER || player.PlayerPawn!.Value.ActualMoveType == MoveType_t.MOVETYPE_OBSERVER 
+                            || player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_FLY || player.PlayerPawn!.Value.ActualMoveType == MoveType_t.MOVETYPE_FLY) &&
                             velo > Configuration!.Bunnyhop.SpeedLimit)
                         {
                             if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
@@ -47,7 +40,7 @@ namespace ExtraUtilities
                         }
                     }
                 }
-            }           
+            }
         }
     }
 }

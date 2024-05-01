@@ -1,15 +1,9 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Cvars;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtraUtilities
 {
@@ -39,6 +33,8 @@ namespace ExtraUtilities
                 .Replace("{type}", type);
 
             string message = $"**{header}**\n{data}";
+
+            Logger.LogInformation(message); //fallback incase discord webhook doesnt work
 
             string webhookUrl = Configuration!.General.Webhook;
 
@@ -96,7 +92,7 @@ namespace ExtraUtilities
 
         public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo info)
         {
-            if (@event.Userid.IsValid)
+            if (@event.Userid!.IsValid)
             {
                 var player = @event.Userid;
 
@@ -115,7 +111,7 @@ namespace ExtraUtilities
                     RapidFire.Remove(player.Slot);
 
                     var entityFromSlot = Utilities.GetPlayerFromSlot(player.Slot);
-                    _lastPlayerShotTick.Remove(entityFromSlot.Pawn.Index);
+                    _lastPlayerShotTick.Remove(entityFromSlot!.Pawn.Index);
                     _rapidFireBlockUserIds.Remove(entityFromSlot.Pawn.Index);
                     _rapidFireBlockWarnings.Remove(entityFromSlot.Pawn.Index);
 
@@ -131,7 +127,7 @@ namespace ExtraUtilities
 
         public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo info)
         {
-            if (@event.Userid.IsValid)
+            if (@event.Userid!.IsValid)
             {
                 var player = @event.Userid;
 
