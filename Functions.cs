@@ -31,37 +31,28 @@ namespace ExtraUtilities
         public async Task Discord(string steamid, string playername, string type)
         {
             string header = ConVar.Find("hostname")!.StringValue;
-            string footer = $"{ConVar.Find("ip")!.StringValue}:{ConVar.Find("port")!.StringValue}";
 
-            // Construct message with actual values, including servername
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
             string data = Configuration!.General.MessageTemplate
                 .Replace("{playername}", playername)
                 .Replace("{steamProfileUrl}", steamProfileUrl)
                 .Replace("{type}", type);
 
-            // Construct the full message with header, data, and footer
-            string message = $"**{header}**\n{data}\n*{footer}*";
+            string message = $"**{header}**\n{data}";
 
-            // Discord webhook URL
             string webhookUrl = Configuration!.General.Webhook;
 
-            // Create JSON payload
             var payload = new
             {
                 content = message
             };
 
-            // Serialize payload to JSON
             var jsonPayload = JsonConvert.SerializeObject(payload);
 
-            // Create HTTP content with JSON payload
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            // Send POST request to Discord webhook URL
             var response = await _httpClient.PostAsync(webhookUrl, httpContent);
 
-            // Check if the request was successful
             if (response.IsSuccessStatusCode)
             {
                 Logger.LogInformation("Message sent to Discord webhook successfully.");
@@ -71,6 +62,7 @@ namespace ExtraUtilities
                 Logger.LogCritical($"Failed to send message to Discord webhook. Status code: {response.StatusCode}");
             }
         }
+
 
 
         private void ResetPlayerStats(int slot)
