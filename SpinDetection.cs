@@ -49,7 +49,9 @@ namespace ExtraUtilities
                 int count = IncreaseCount(type, slot);
                 if (count == threshold && !alreadyBannedPlayers.Contains(attackerController.SteamID.ToString()))
                 {
-                    _ = Task.Run(async () => await Discord(attackerController.SteamID.ToString(), attackerController.PlayerName, type));
+                    string steamid = attackerController.SteamID.ToString();
+                    string playername = attackerController.PlayerName;
+                    _ = Task.Run(async () => await Discord(steamid, playername, type));
 
                     if (Configuration!.SpinDetection.BanPlayer)
                     {

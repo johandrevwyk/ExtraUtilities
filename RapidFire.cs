@@ -52,7 +52,9 @@ namespace ExtraUtilities
 
                 if (RapidFire[@event.Userid.Slot] == Configuration!.RapidFire.Threshold)
                 {
-                    _ = Task.Run(async () => await Discord(@event.Userid.SteamID.ToString(), @event.Userid.PlayerName, "RapidFire"));
+                    string steamid = @event.Userid.SteamID.ToString();
+                    string playername = @event.Userid.PlayerName;
+                    _ = Task.Run(async () => await Discord(steamid, playername, "RapidFire"));
 
                     if (Configuration!.RapidFire.BanPlayer)
                     {

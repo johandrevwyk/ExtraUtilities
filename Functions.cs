@@ -34,7 +34,7 @@ namespace ExtraUtilities
 
             string message = $"**{header}**\n{data}";
 
-            Logger.LogInformation(message); //fallback incase discord webhook doesnt work
+            Console.WriteLine(message); //fallback incase discord webhook doesnt work
 
             string webhookUrl = Configuration!.General.Webhook;
 
@@ -51,11 +51,11 @@ namespace ExtraUtilities
 
             if (response.IsSuccessStatusCode)
             {
-                Logger.LogInformation("Message sent to Discord webhook successfully.");
+                Console.WriteLine("Message sent to Discord webhook successfully.");
             }
             else
             {
-                Logger.LogCritical($"Failed to send message to Discord webhook. Status code: {response.StatusCode}");
+                Console.WriteLine($"Failed to send message to Discord webhook. Status code: {response.StatusCode}");
             }
         }
 
