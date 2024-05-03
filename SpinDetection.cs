@@ -15,32 +15,26 @@ namespace ExtraUtilities
 
         public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo @info)
         {
+            if (@event == null) return HookResult.Continue;
+            if (@event.Userid == null) return HookResult.Continue;
+
+            CCSPlayerController victim = @event.Userid;
+            CCSPlayerController attackerController = @event.Attacker!;
+
             if (Configuration!.SpinDetection.Enabled)
             {
-                if (@event.Userid!.IsValid)
+                if (victim.IsValid && attackerController.IsValid)
                 {
-                    if (@event == null) return HookResult.Continue;
-                    if (@event.Userid == null) return HookResult.Continue;
-
-                    var player = @event.Userid;
                     bool headshot = @event.Headshot;
                     bool noscope = @event.Noscope;
                     bool thrusmoke = @event.Thrusmoke;
                     int? penetrated = @event.Penetrated;
-                    CCSPlayerController attackerController = @event.Attacker!;
 
-                    if (!player.IsBot || player.IsValid || player != null)
-                    {
-                        if (attackerController!.IsValid)
-                        {
-                            CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotPenetratedNoScope);
-                            CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, Configuration!.SpinDetection.HeadshotPenetrated);
-                            CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotSmokePenetratedNoScope);
-                            CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, Configuration!.SpinDetection.HeadshotSmoke);
-                            CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, Configuration!.SpinDetection.HeadshotSmokePenetrated);
-                        }
-
-                    }
+                    CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotPenetratedNoScope);
+                    CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, Configuration!.SpinDetection.HeadshotPenetrated);
+                    CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotSmokePenetratedNoScope);
+                    CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, Configuration!.SpinDetection.HeadshotSmoke);
+                    CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, Configuration!.SpinDetection.HeadshotSmokePenetrated);
                 }
             }
             

@@ -60,7 +60,11 @@ public partial class ExtraUtilities : BasePlugin
                 throw new Exception("Discord webhook is not set");
             }
         }
-
+        else
+        {
+            Logger.LogCritical("An error occured while loading the config, please check your entries and double check the directory - addons/counterstrikesharp/plugins/ExtraUtilities/config.json");
+            throw new Exception("Error in config");
+        }
     }
 
 }
