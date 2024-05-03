@@ -24,7 +24,7 @@ namespace ExtraUtilities
 
         public async Task Discord(string steamid, string playername, string type)
         {
-            string header = ConVar.Find("hostname")!.StringValue;
+            string header = _hostname;
 
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
             string data = Configuration!.General.MessageTemplate
@@ -79,6 +79,8 @@ namespace ExtraUtilities
 
                 _lastPlayerShotTick.Clear();
             }
+
+            _hostname = ConVar.Find("hostname")!.StringValue;
         }
         public HookResult OnRoundPrestart(EventRoundPrestart @event, GameEventInfo info)
         {

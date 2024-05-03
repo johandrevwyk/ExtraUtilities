@@ -10,11 +10,13 @@ public partial class ExtraUtilities : BasePlugin
     public override string ModuleName => "ExtraUtilities";
     public override string ModuleAuthor => "heartbreakhotel";
     public override string ModuleDescription => "Additional server utilities";
-    public override string ModuleVersion => "0.0.9";
+    public override string ModuleVersion => "0.1.0";
 
     public const string ConfigFileName = "config.json";
     public string GameDir = string.Empty;
     public Config? Configuration;
+
+    string _hostname = "Not Set";
 
     private Dictionary<int, CCSPlayerController> connectedPlayers = new Dictionary<int, CCSPlayerController>();
 
