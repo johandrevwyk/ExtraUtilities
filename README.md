@@ -17,7 +17,7 @@ This plugin provides multiple features such as detecting Spinbot, RapidFire, Bun
 # Installation
 
 Extract the zip in ```addons/counterstrikesharp/plugins```\
-Modify the config to your liking - ensuring that discord webhook is set
+After launching the plugin for the first time, you will have to modify your config in ```addons/counterstrikesharp/configs/plugins/ExtraUtilities```
 
 # Config
 
