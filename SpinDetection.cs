@@ -21,7 +21,7 @@ namespace ExtraUtilities
             CCSPlayerController victim = @event.Userid;
             CCSPlayerController attackerController = @event.Attacker!;
 
-            if (Configuration!.SpinDetection.Enabled)
+            if (Config.SpinDetection.Enabled)
             {
                 if (victim.IsValid && attackerController.IsValid)
                 {
@@ -30,11 +30,11 @@ namespace ExtraUtilities
                     bool thrusmoke = @event.Thrusmoke;
                     int? penetrated = @event.Penetrated;
 
-                    CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotPenetratedNoScope);
-                    CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, Configuration!.SpinDetection.HeadshotPenetrated);
-                    CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, Configuration!.SpinDetection.HeadshotSmokePenetratedNoScope);
-                    CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, Configuration!.SpinDetection.HeadshotSmoke);
-                    CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, Configuration!.SpinDetection.HeadshotSmokePenetrated);
+                    CheckThreshold(attackerController, "HeadshotPenetratedNoScope", headshot && penetrated > 0 && noscope, Config.SpinDetection.HeadshotPenetratedNoScope);
+                    CheckThreshold(attackerController, "HeadshotPenetrated", headshot && penetrated > 0, Config.SpinDetection.HeadshotPenetrated);
+                    CheckThreshold(attackerController, "HeadshotSmokePenetratedNoScope", headshot && thrusmoke && penetrated > 0 && noscope, Config.SpinDetection.HeadshotSmokePenetratedNoScope);
+                    CheckThreshold(attackerController, "HeadshotSmoke", headshot && thrusmoke, Config.SpinDetection.HeadshotSmoke);
+                    CheckThreshold(attackerController, "HeadshotSmokePenetrated", headshot && thrusmoke && penetrated > 0, Config.SpinDetection.HeadshotSmokePenetrated);
                 }
             }
             
@@ -53,18 +53,18 @@ namespace ExtraUtilities
                     string playername = attackerController.PlayerName;
                     _ = Task.Run(async () => await Discord(steamid, playername, type));
 
-                    if (Configuration!.SpinDetection.BanPlayer)
+                    if (Config.SpinDetection.BanPlayer)
                     {
-                        string banMessagePlayer = Configuration.SpinDetection.BanMessagePlayer
+                        string banMessagePlayer = Config.SpinDetection.BanMessagePlayer
                             .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
                             .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
 
-                        string banMessageServer = Configuration.SpinDetection.BanMessageServer
+                        string banMessageServer = Config.SpinDetection.BanMessageServer
                             .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
                             .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
                             .Replace("{attackerController.PlayerName}", attackerController.PlayerName);
 
-                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 {Configuration!.SpinDetection.BanReason}");
+                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 {Config.SpinDetection.BanReason}");
 
                         attackerController.PrintToChat(banMessagePlayer);
                         Server.PrintToChatAll(banMessageServer);

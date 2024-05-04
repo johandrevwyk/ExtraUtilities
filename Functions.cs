@@ -7,19 +7,8 @@ using System.Text;
 
 namespace ExtraUtilities
 {
-    public partial class ExtraUtilities
+    public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
     {
-        private void LoadConfig()
-        {
-            GameDir = Server.GameDirectory;
-            var jsonPath = Path.Join(GameDir + "/csgo/addons/counterstrikesharp/plugins/ExtraUtilities", "config.json");
-
-            Configuration = JsonConvert.DeserializeObject<Config>(File.ReadAllText(jsonPath));
-
-            if (Configuration == null)
-                throw new JsonException("Configuration could not be loaded");
-        }
-
         private readonly HttpClient _httpClient = new HttpClient();
 
         public async Task Discord(string steamid, string playername, string type)
@@ -27,7 +16,7 @@ namespace ExtraUtilities
             string header = _hostname;
 
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
-            string data = Configuration!.General.MessageTemplate
+            string data = Config.General.MessageTemplate
                 .Replace("{playername}", playername)
                 .Replace("{steamProfileUrl}", steamProfileUrl)
                 .Replace("{type}", type);
@@ -36,7 +25,7 @@ namespace ExtraUtilities
 
             Console.WriteLine(message); //fallback incase discord webhook doesnt work
 
-            string webhookUrl = Configuration!.General.Webhook;
+            string webhookUrl = Config.General.Webhook;
 
             var payload = new
             {

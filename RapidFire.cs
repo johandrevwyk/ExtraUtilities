@@ -15,7 +15,7 @@ namespace ExtraUtilities
 
         public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo @info)
         {
-            if (Configuration!.RapidFire.Enabled)
+            if (Config.RapidFire.Enabled)
             {
                 if (@event.Userid is not { IsValid: true, IsHLTV: false, IsBot: false, UserId: not null, SteamID: > 0 })
                     return HookResult.Continue;
@@ -50,24 +50,24 @@ namespace ExtraUtilities
 
                 if (RapidFire.ContainsKey(@event.Userid.Slot)) RapidFire[@event.Userid.Slot]++;
 
-                if (RapidFire[@event.Userid.Slot] == Configuration!.RapidFire.Threshold)
+                if (RapidFire[@event.Userid.Slot] == Config.RapidFire.Threshold)
                 {
                     string steamid = @event.Userid.SteamID.ToString();
                     string playername = @event.Userid.PlayerName;
                     _ = Task.Run(async () => await Discord(steamid, playername, "RapidFire"));
 
-                    if (Configuration!.RapidFire.BanPlayer)
+                    if (Config.RapidFire.BanPlayer)
                     {
-                        string banMessagePlayer = Configuration.RapidFire.BanMessagePlayer
+                        string banMessagePlayer = Config.RapidFire.BanMessagePlayer
                                                     .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
                                                     .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
 
-                        string banMessageServer = Configuration.RapidFire.BanMessageServer
+                        string banMessageServer = Config.RapidFire.BanMessageServer
                             .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
                             .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
                             .Replace("{attackerController.PlayerName}", @event.Userid.PlayerName);
 
-                        Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 {Configuration!.RapidFire.BanReason}");
+                        Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 {Config.RapidFire.BanReason}");
 
                         @event.Userid.PrintToChat(banMessagePlayer);
                         Server.PrintToChatAll(banMessageServer);

@@ -5,17 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace ExtraUtilities;
 
-public partial class ExtraUtilities : BasePlugin
+public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
 {
     
     public override string ModuleName => "ExtraUtilities";
     public override string ModuleAuthor => "heartbreakhotel";
     public override string ModuleDescription => "Additional server utilities";
-    public override string ModuleVersion => "0.1.2";
-
-    public const string ConfigFileName = "config.json";
-    public string GameDir = string.Empty;
-    public Config? Configuration;
+    public override string ModuleVersion => "0.1.3";
 
     string _hostname = "Not Set";
 
@@ -23,8 +19,6 @@ public partial class ExtraUtilities : BasePlugin
 
     public override void Load(bool hotReload)
     {
-        LoadConfig();
-
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
@@ -55,21 +49,6 @@ public partial class ExtraUtilities : BasePlugin
         } else
         {
             Logger.LogInformation("Detected Windows OS, disabling Rapid Fire");
-        }
-        
-
-        if (Configuration != null)
-        {
-            if (Configuration.General.Webhook == null)
-            {
-                Logger.LogCritical("You do not have a discord webhook set therefore the plugin will not load");
-                throw new Exception("Discord webhook is not set");
-            }
-        }
-        else
-        {
-            Logger.LogCritical("An error occured while loading the config, please check your entries and double check the directory - addons/counterstrikesharp/plugins/ExtraUtilities/config.json");
-            throw new Exception("Error in config");
         }
     }
 

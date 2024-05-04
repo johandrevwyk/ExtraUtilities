@@ -61,8 +61,8 @@ Modify the config to your liking - ensuring that discord webhook is set
     "Enabled" : true,
     "SilencePlayer": true,
     "Duration": 4080,
-    "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Configuration.BannedWordsSettings.Duration} minutes due to {Configuration.BannedWordsSettings.Reason}",
-    "SilenceMessageServer": " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Configuration.BannedWordsSettings.Reason}",
+    "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Config.BannedWordsSettings.Duration} minutes due to {Config.BannedWordsSettings.Reason}",
+    "SilenceMessageServer": " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Config.BannedWordsSettings.Reason}",
     "Reason": "Racism"
   },
 

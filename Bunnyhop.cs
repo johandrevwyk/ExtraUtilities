@@ -3,13 +3,13 @@ using CounterStrikeSharp.API.Modules.Utils;
 
 namespace ExtraUtilities
 {
-    public partial class ExtraUtilities
+    public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
     {
         public Dictionary<int, int> Speed { get; set; } = new Dictionary<int, int>();
 
         private void OnTick()
         {
-            if (Configuration!.Bunnyhop.Enabled)
+            if (Config.Bunnyhop.Enabled)
             {
                 foreach (CCSPlayerController player in connectedPlayers.Values)
                 {
@@ -23,11 +23,11 @@ namespace ExtraUtilities
                         if (!(player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_NOCLIP || player.PlayerPawn.Value.ActualMoveType == MoveType_t.MOVETYPE_NOCLIP 
                             || player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_OBSERVER || player.PlayerPawn!.Value.ActualMoveType == MoveType_t.MOVETYPE_OBSERVER 
                             || player.PlayerPawn!.Value.MoveType == MoveType_t.MOVETYPE_FLY || player.PlayerPawn!.Value.ActualMoveType == MoveType_t.MOVETYPE_FLY) &&
-                            velo > Configuration!.Bunnyhop.SpeedLimit)
+                            velo > Config.Bunnyhop.SpeedLimit)
                         {
-                            if (Configuration!.Bunnyhop.DecreasePlayerSpeed)
+                            if (Config.Bunnyhop.DecreasePlayerSpeed)
                             {
-                                float mult = Configuration!.Bunnyhop.SpeedLimit / velo;
+                                float mult = Config.Bunnyhop.SpeedLimit / velo;
                                 velocity.X *= mult;
                                 velocity.Y *= mult;
                                 player.PlayerPawn.Value!.AbsVelocity.X = velocity.X;
@@ -35,7 +35,7 @@ namespace ExtraUtilities
                             }
 
                             if (Speed.ContainsKey(player.Slot)) Speed[player.Slot]++;
-                            if (Speed[player.Slot] == Configuration!.Bunnyhop.Threshold)
+                            if (Speed[player.Slot] == Config.Bunnyhop.Threshold)
                                 _ = Task.Run(async () => await Discord(steamID, playerName, "Bunnyhop Speed"));
                         }
                     }
