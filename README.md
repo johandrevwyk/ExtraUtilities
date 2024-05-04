@@ -12,7 +12,7 @@ This plugin provides multiple features such as detecting Spinbot, RapidFire, Bun
 
 **This plugin uses the css_ban and css_silence format**
 
-**THIS PLUGIN WILL NOT WORK ON WINDOWS AND WILL CAUSE SERVER CRASHES**
+**Rapid Fire will be disabled on Windows due to Damage Hook causing crashes**
 
 # Installation
 
