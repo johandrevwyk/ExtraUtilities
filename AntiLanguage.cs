@@ -21,19 +21,10 @@ namespace ExtraUtilities
                     _ = Task.Run(async () => await Discord(steamid, playername, arg));
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
-                        string silenceMessagePlayer = Config.BannedWordsSettings.SilenceMessagePlayer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{Config.BannedWordsSettings.Duration}", Config.BannedWordsSettings.Duration.ToString())
-                            .Replace("{Config.BannedWordsSettings.Reason}", Config.BannedWordsSettings.Reason);
+                        string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);
+                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgplayer", player.PlayerName, Localizer["silencereason"]]);
 
-                        string silenceMessageServer = Config.BannedWordsSettings.SilenceMessageServer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{player.PlayerName}", player.PlayerName)
-                            .Replace("{Config.BannedWordsSettings.Reason}", Config.BannedWordsSettings.Reason);
-
-                        Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Config.BannedWordsSettings.Reason}");
+                        Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Localizer["silencereason"]}");
                         player.PrintToChat(silenceMessagePlayer);
                         Server.PrintToChatAll(silenceMessageServer);
                     }
@@ -57,19 +48,10 @@ namespace ExtraUtilities
                     _ = Task.Run(async () => await Discord(steamid, playername, arg));
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
-                        string silenceMessagePlayer = Config.BannedWordsSettings.SilenceMessagePlayer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{Config.BannedWordsSettings.Duration}", Config.BannedWordsSettings.Duration.ToString())
-                            .Replace("{Config.BannedWordsSettings.Reason}", Config.BannedWordsSettings.Reason);
+                        string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);
+                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgplayer", player.PlayerName, Localizer["silencereason"]]);
 
-                        string silenceMessageServer = Config.BannedWordsSettings.SilenceMessageServer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{player.PlayerName}", player.PlayerName)
-                            .Replace("{Config.BannedWordsSettings.Reason}", Config.BannedWordsSettings.Reason);
-
-                        Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Config.BannedWordsSettings.Reason}");
+                        Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Localizer["silencereason"]}");
                         player.PrintToChat(silenceMessagePlayer);
                         Server.PrintToChatAll(silenceMessageServer);
                     }

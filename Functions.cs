@@ -1,12 +1,27 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Cvars;
+using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Reflection;
 using System.Text;
 
 namespace ExtraUtilities
 {
+    public static class Chat
+    {
+        private static readonly Dictionary<string, char> PredefinedColors = typeof(ChatColors)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .ToDictionary(field => $"{{{field.Name}}}", field => (char)(field.GetValue(null) ?? '\x01'));
+
+        public static string FormatMessage(string message) =>
+            PredefinedColors.Aggregate(message, (current, color) => current.Replace(color.Key, $"{color.Value}"));
+
+        public static string CleanMessage(string message) =>
+            PredefinedColors.Aggregate(message, (current, color) => current.Replace(color.Key, "").Replace(color.Value.ToString(), ""));
+    }
+
     public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
     {
         private readonly HttpClient _httpClient = new HttpClient();
@@ -16,10 +31,8 @@ namespace ExtraUtilities
             string header = _hostname;
 
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
-            string data = Config.General.MessageTemplate
-                .Replace("{playername}", playername)
-                .Replace("{steamProfileUrl}", steamProfileUrl)
-                .Replace("{type}", type);
+
+            string data = Localizer["message_template", playername, steamProfileUrl, type];
 
             string message = $"**{header}**\n{data}";
 
@@ -145,7 +158,6 @@ namespace ExtraUtilities
             }
             else
             {
-                //Console.WriteLine($"[CS2Arena] @evemt.Userid is not valid, proceed to kill yourself");
                 return HookResult.Continue;
             }
         }

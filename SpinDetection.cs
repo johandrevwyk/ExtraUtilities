@@ -1,6 +1,7 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace ExtraUtilities
 {
@@ -55,16 +56,11 @@ namespace ExtraUtilities
 
                     if (Config.SpinDetection.BanPlayer)
                     {
-                        string banMessagePlayer = Config.SpinDetection.BanMessagePlayer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
 
-                        string banMessageServer = Config.SpinDetection.BanMessageServer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{attackerController.PlayerName}", attackerController.PlayerName);
+                        string banMessagePlayer = Chat.FormatMessage(Localizer["banmsgplayer_spin"]);
+                        string banMessageServer = Chat.FormatMessage(Localizer["banmsgsvr_spin", attackerController.PlayerName]);
 
-                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 {Config.SpinDetection.BanReason}");
+                        Server.ExecuteCommand($"css_ban #{attackerController.UserId} 0 {Localizer["banreason_spin"]}");
 
                         attackerController.PrintToChat(banMessagePlayer);
                         Server.PrintToChatAll(banMessageServer);

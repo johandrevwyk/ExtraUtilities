@@ -7,9 +7,6 @@ namespace ExtraUtilities
     {
         [JsonPropertyName("Webhook")]
         public string Webhook { get; set; } = "";
-
-        [JsonPropertyName("MessageTemplate")]
-        public string MessageTemplate { get; set; } = "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}";
     }
 
     public class Bunnyhop
@@ -49,15 +46,6 @@ namespace ExtraUtilities
 
         [JsonPropertyName("BanPlayer")]
         public bool BanPlayer { get; set; } = true;
-
-        [JsonPropertyName("BanMessagePlayer")]
-        public string BanMessagePlayer { get; set; } = " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord";
-
-        [JsonPropertyName("BanMessageServer")]
-        public string BanMessageServer { get; set; } = " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating";
-
-        [JsonPropertyName("BanReason")]
-        public string BanReason { get; set; } = "Cheating";
     }
 
     public class RapidFire
@@ -71,14 +59,6 @@ namespace ExtraUtilities
         [JsonPropertyName("Threshold")]
         public int Threshold { get; set; } = 3;
 
-        [JsonPropertyName("BanMessagePlayer")]
-        public string BanMessagePlayer { get; set; } = " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord";
-
-        [JsonPropertyName("BanMessageServer")]
-        public string BanMessageServer { get; set; } = " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating";
-
-        [JsonPropertyName("BanReason")]
-        public string BanReason { get; set; } = "Cheating";
     }
 
     public class BannedWordsSettings
@@ -92,14 +72,6 @@ namespace ExtraUtilities
         [JsonPropertyName("Duration")]
         public int Duration { get; set; } = 4080;
 
-        [JsonPropertyName("SilenceMessagePlayer")]
-        public string SilenceMessagePlayer { get; set; } = " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Config.BannedWordsSettings.Duration} minutes due to {Config.BannedWordsSettings.Reason}";
-
-        [JsonPropertyName("SilenceMessageServer")]
-        public string SilenceMessageServer { get; set; } = " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Config.BannedWordsSettings.Reason}";
-
-        [JsonPropertyName("Reason")]
-        public string Reason { get; set; } = "Racism";
     }
 
     public class UtilitiesConfig : BasePluginConfig
@@ -122,7 +94,7 @@ namespace ExtraUtilities
         [JsonPropertyName("BannedWords")]
         public string[] BannedWords { get; set; } = ["word1", "word2"];
 
-        [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 1;
+        [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 2;
     }
 
     public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
@@ -134,7 +106,7 @@ namespace ExtraUtilities
             Console.WriteLine("Config Loaded Succesfully");
             Config = config;
 
-            if (Config.Version != 1) throw new Exception("Config version mismatch");
+            if (Config.Version != 2) throw new Exception("Config version mismatch");
 
             if (string.IsNullOrEmpty(Config.General.Webhook))
             {

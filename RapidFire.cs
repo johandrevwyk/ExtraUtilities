@@ -58,16 +58,11 @@ namespace ExtraUtilities
 
                     if (Config.RapidFire.BanPlayer)
                     {
-                        string banMessagePlayer = Config.RapidFire.BanMessagePlayer
-                                                    .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                                                    .Replace("{ChatColors.Default}", $"{ChatColors.Default}");
 
-                        string banMessageServer = Config.RapidFire.BanMessageServer
-                            .Replace("{ChatColors.Red}", $"{ChatColors.Red}")
-                            .Replace("{ChatColors.Default}", $"{ChatColors.Default}")
-                            .Replace("{attackerController.PlayerName}", @event.Userid.PlayerName);
+                        string banMessagePlayer = Chat.FormatMessage(Localizer["banmsgplayer_rapid"]);
+                        string banMessageServer = Chat.FormatMessage(Localizer["banmsgsvr_rapid", @event.Userid.PlayerName]);
 
-                        Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 {Config.RapidFire.BanReason}");
+                        Server.ExecuteCommand($"css_ban #{@event.Userid.UserId} 0 {Localizer["banreason_rapid"]}");
 
                         @event.Userid.PrintToChat(banMessagePlayer);
                         Server.PrintToChatAll(banMessageServer);
