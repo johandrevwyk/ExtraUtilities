@@ -22,7 +22,7 @@ namespace ExtraUtilities
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
                         string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);
-                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgplayer", player.PlayerName, Localizer["silencereason"]]);
+                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgserver", player.PlayerName, Localizer["silencereason"]]);
 
                         Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Localizer["silencereason"]}");
                         player.PrintToChat(silenceMessagePlayer);
@@ -49,7 +49,7 @@ namespace ExtraUtilities
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
                         string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);
-                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgplayer", player.PlayerName, Localizer["silencereason"]]);
+                        string silenceMessageServer = Chat.FormatMessage(Localizer["silencemsgserver", player.PlayerName, Localizer["silencereason"]]);
 
                         Server.ExecuteCommand($"css_silence #{player.UserId} {Config.BannedWordsSettings.Duration} {Localizer["silencereason"]}");
                         player.PrintToChat(silenceMessagePlayer);
