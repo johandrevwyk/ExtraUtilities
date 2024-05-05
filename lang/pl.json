@@ -1,5 +1,5 @@
 ﻿{
-  "message_template": "@everyone Gracz: [{0}}]({1}) jest w trakcie naruszenia - {2}",
+  "message_template": "@everyone Gracz: [{0}]({1}) jest w trakcie naruszenia - {2}",
 
   "banmsgplayer_spin": " {Red}[Server] - {Default}Zostałeś automatycznie zbanowany z powodu cheatow. Jeżeli uważasz, że to pomyłka odwołaj się na discordzie.",
   "banmsgsvr_spin": " {Red}[Server] - {0} {Default}Został automatycznie zbanowany z powodu cheatow",
