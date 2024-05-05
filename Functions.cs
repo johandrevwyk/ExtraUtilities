@@ -28,12 +28,10 @@ namespace ExtraUtilities
 
         public async Task Discord(string steamid, string playername, string type)
         {
-            Console.WriteLine("Triggering discord webhook");
             string header = _hostname;
 
             string steamProfileUrl = $"https://steamcommunity.com/profiles/{steamid}";
 
-            Console.WriteLine(Localizer["message_template", playername, steamProfileUrl, type]);
 
             string data = Localizer["message_template", playername, steamProfileUrl, type];
 
