@@ -1,0 +1,16 @@
+﻿{
+  "message_template": "@everyone Gracz: [{0}}]({1}) jest w trakcie naruszenia - {2}",
+
+  "banmsgplayer_spin": " {Red}[Server] - {Default}Zostałeś automatycznie zbanowany z powodu cheatow. Jeżeli uważasz, że to pomyłka odwołaj się na discordzie.",
+  "banmsgsvr_spin": " {Red}[Server] - {0} {Default}Został automatycznie zbanowany z powodu cheatow",
+  "banreason_spin": "Cheatuje",
+
+  "banmsgplayer_rapid": " {Red}[Server] - {Default}Zostałeś automatycznie zbanowany z powodu cheatow. Jeżeli uważasz, że to pomyłka odwołaj się na discordzie.",
+  "banmsgsvr_rapid": " {Red}[Server] - {0} {Default}Został automatycznie zbanowany z powodu cheatow",
+  "banreason_rapid": "Cheatuje",
+
+  "silencemsgplayer": " {Red}[Server] - {Default}Automatycznie zablokowano czat głosowy i tekstowy na {0} minut z powodem {1}",
+  "silencemsgserver": " {Red}[Server] - {0} {Default}dostaje automatyczną blokadę na czat tekstowy i głosowy z powodem {1}",
+  "silencereason": "Racism"
+
+}

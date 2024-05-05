@@ -1,5 +1,5 @@
 {
-  "message_template": "@everyone Player: [{0}}]({1}) is in violation of - {2}",
+  "message_template": "@everyone Player: [{0}]({1}) is in violation of - {2}",
 
   "banmsgplayer_spin": " {Red}[Server] - {Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord",
   "banmsgsvr_spin": " {Red}[Server] - {0} {Default}has automatically been banned due to cheating",
