@@ -24,8 +24,7 @@ After launching the plugin for the first time, you will have to modify your conf
 ```json
 {
   "General": {
-    "Webhook": "", //your webhook url
-    "MessageTemplate": "@everyone Player: [{playername}]({steamProfileUrl}) is in violation of - {type}" //do not change the variables
+    "Webhook": "" //your webhook url
   },
 
   "Bunnyhop": {
@@ -42,28 +41,19 @@ After launching the plugin for the first time, you will have to modify your conf
     "HeadshotSmokePenetratedNoScope": 3,
     "HeadshotSmoke": 8,
     "HeadshotSmokePenetrated": 5,
-    "BanPlayer": true,
-    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord", //do not change the colors or variables, only the text
-    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
-    "BanReason": "Cheating"
+    "BanPlayer": true
   },
 
   "RapidFire": {
     "Enabled" : true,
     "BanPlayer": true,
-    "Threshold": 3,
-    "BanMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been banned due to cheating, if you think this was a mistake, appeal on the discord", //do not change the colors or variables, only the text
-    "BanMessageServer": " {ChatColors.Red}[Server] - {attackerController.PlayerName} {ChatColors.Default}has automatically been banned due to cheating",
-    "BanReason": "Cheating"
+    "Threshold": 3
   },
 
   "BannedWordsSettings": {
     "Enabled" : true,
     "SilencePlayer": true,
-    "Duration": 4080,
-    "SilenceMessagePlayer": " {ChatColors.Red}[Server] - {ChatColors.Default}You have automatically been silenced for {Config.BannedWordsSettings.Duration} minutes due to {Config.BannedWordsSettings.Reason}",
-    "SilenceMessageServer": " {ChatColors.Red}[Server] - {player.PlayerName} {ChatColors.Default}has automatically been silenced due to {Config.BannedWordsSettings.Reason}",
-    "Reason": "Racism"
+    "Duration": 4080
   },
 
   "BannedWords": [
@@ -73,8 +63,6 @@ After launching the plugin for the first time, you will have to modify your conf
 
 }
 ```
-
-PS: I'm too lazy to deal with colors, so you will have to stick with red or keep it white
 
 Rapid Fire code borrowed from [RapidFireFix by imi-tat0r](https://github.com/HvH-gg/RapidFireFix/)
 
