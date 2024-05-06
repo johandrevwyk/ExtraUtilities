@@ -22,6 +22,9 @@ namespace ExtraUtilities
             CCSPlayerController victim = @event.Userid;
             CCSPlayerController attackerController = @event.Attacker!;
 
+            if (victim == null) return HookResult.Continue;
+            if (attackerController == null) return HookResult.Continue;
+
             if (Config.SpinDetection.Enabled)
             {
                 if (victim.IsValid && attackerController.IsValid)
