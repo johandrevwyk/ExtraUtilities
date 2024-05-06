@@ -18,7 +18,7 @@ namespace ExtraUtilities
                 {
                     string steamid = player.SteamID.ToString();
                     string playername = player.PlayerName;
-                    _ = Task.Run(async () => await Discord(steamid, playername, arg));
+                    if (Config.BannedWordsSettings.SendWebhook) _ = Task.Run(async () => await Discord(steamid, playername, arg));
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
                         string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);
@@ -45,7 +45,7 @@ namespace ExtraUtilities
                 {
                     string steamid = player.SteamID.ToString();
                     string playername = player.PlayerName;
-                    _ = Task.Run(async () => await Discord(steamid, playername, arg));
+                    if (Config.BannedWordsSettings.SendWebhook) _ = Task.Run(async () => await Discord(steamid, playername, arg));
                     if (Config.BannedWordsSettings.SilencePlayer)
                     {
                         string silenceMessagePlayer = Chat.FormatMessage(Localizer["silencemsgplayer", Config.BannedWordsSettings.Duration.ToString(), Localizer["silencereason"]]);

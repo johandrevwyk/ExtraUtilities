@@ -66,6 +66,9 @@ namespace ExtraUtilities
         [JsonPropertyName("Enabled")]
         public bool Enabled { get; set; } = true;
 
+        [JsonPropertyName("SendWebhook")]
+        public bool SendWebhook { get; set; } = true;
+
         [JsonPropertyName("SilencePlayer")]
         public bool SilencePlayer { get; set; } = true;
 
@@ -94,7 +97,7 @@ namespace ExtraUtilities
         [JsonPropertyName("BannedWords")]
         public string[] BannedWords { get; set; } = ["word1", "word2"];
 
-        [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 2;
+        [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 3;
     }
 
     public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
@@ -106,7 +109,7 @@ namespace ExtraUtilities
             Console.WriteLine("Config Loaded Succesfully");
             Config = config;
 
-            if (Config.Version != 2) throw new Exception("Config version mismatch");
+            if (Config.Version != 3) throw new Exception("Config version mismatch");
 
             if (string.IsNullOrEmpty(Config.General.Webhook))
             {

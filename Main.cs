@@ -11,7 +11,7 @@ public partial class ExtraUtilities : BasePlugin, IPluginConfig<UtilitiesConfig>
     public override string ModuleName => "ExtraUtilities";
     public override string ModuleAuthor => "heartbreakhotel";
     public override string ModuleDescription => "Additional server utilities";
-    public override string ModuleVersion => "0.1.5";
+    public override string ModuleVersion => "0.1.6";
 
     string _hostname = "Not Set";
 
