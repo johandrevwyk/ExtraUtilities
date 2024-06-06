@@ -1,9 +1,9 @@
+> [!WARNING]  
+> This plugin does not extensively or actively check for a cheater, it rather matches a criteria on player kill with thresholds
 
 # ExtraUtilities
 
 This plugin provides multiple features such as detecting Spinbot, RapidFire, Bunnyhop and Banned Words
-
-**NOTE: This plugin does not extensively or actively check for a cheater, it rather matches a criteria on player kill with thresholds**
 
 # Requirements
 
